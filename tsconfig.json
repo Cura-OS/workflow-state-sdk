@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@curaos/tsconfig/nestjs.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts", "test", "dist", "node_modules"]
+}
