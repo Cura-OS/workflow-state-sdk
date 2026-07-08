@@ -1,43 +1,113 @@
-# @curaos/workflow-state-sdk
+<div align="center">
 
-Typed entity-lifecycle state machines on [XState v5](https://stately.ai/docs) (MIT).
-Wraps `createMachine`/`createActor` behind a plain `states` + `transitions`
-config so any service can model an entity lifecycle (Order
-draft->submitted->approved->fulfilled, a clinical encounter's status, a
-subscription's active/paused/cancelled, ...) without hand-rolled `switch`
-statements or touching XState's API directly.
 
-Scope: standalone runtime helper only. Generating this config FROM a `.tsp`
-state/transition annotation is a separate follow-up - no such TypeSpec
-decorator convention exists in this codebase yet (checked: only plain `enum`
-status fields with prose lifecycle comments, e.g. `PluginStatus`,
-`InvoiceStatus`). See `tools/codegen/curaos_generator_evolution_rule.md`.
+# workflow-state-sdk
 
-## Surface
+**Provide a typed, config-driven entity-lifecycle state machine primitive for CuraOS services, built on XState v5.**
 
-```ts
-import { createLifecycle } from '@curaos/workflow-state-sdk';
+Part of the CuraOS (Care Oriented Stack) platform. Provide a typed, config-driven entity-lifecycle state machine primitive for CuraOS services, built on XState v5. Domain: neutral.
 
-type OrderState = 'draft' | 'submitted' | 'approved' | 'fulfilled' | 'rejected';
-type OrderEvent = 'submit' | 'approve' | 'reject' | 'fulfill';
+[![Status](https://img.shields.io/badge/status-private--alpha-informational)](#status)
+[![License: Proprietary](https://img.shields.io/badge/license-Proprietary-red)](./LICENSE)
+[![Exposure: Closed](https://img.shields.io/badge/exposure-Closed-red)](#license)
+[![Module: Sdk](https://img.shields.io/badge/module-Sdk-informational)](#how-it-works)
 
-const order = createLifecycle<OrderState, OrderEvent>({
-  initial: 'draft',
-  states: {
-    draft: { submit: 'submitted' },
-    submitted: { approve: 'approved', reject: 'rejected' },
-    approved: { fulfill: 'fulfilled' },
-    fulfilled: {},
-    rejected: {},
-  },
-});
+[Why](#why) · [Quick Start](#quick-start) · [Capabilities](#capabilities) · [How it Works](#how-it-works) · [Status](#status) · [Security](#security)
 
-order.state;              // 'draft'
-order.can('submit');      // true
-order.send('submit');     // { accepted: true, state: 'submitted' }
-order.send('submit');     // { accepted: false, state: 'submitted' } - not declared, rejected
-order.stop();
+</div>
+
+---
+
+## Why
+
+Provide a typed, config-driven entity-lifecycle state machine primitive for CuraOS services, built on XState v5.
+
+<!-- curaos:keep -->
+<!-- /curaos:keep -->
+
+---
+
+## Quick Start
+
+```bash
+bun add @curaos/workflow-state-sdk
 ```
 
-Invalid transitions (an event not declared for the current state) are
-rejected: the actor stays put and `send()` reports `accepted: false`.
+<!-- curaos:keep -->
+<!-- /curaos:keep -->
+
+---
+
+## Capabilities
+
+- Typecheck passes.
+- Unit tests cover valid and invalid transition attempts.
+- Build passes.
+
+<!-- curaos:keep -->
+<!-- /curaos:keep -->
+
+---
+
+## How it Works
+
+| Area | Detail |
+|---|---|
+| Package | `@curaos/workflow-state-sdk` |
+| Source | `backend/packages/workflow-state-sdk` |
+| Domain | `neutral` |
+| Layer | `package` |
+| Exposure | Closed |
+
+- Source path: `backend/packages/workflow-state-sdk`
+- Generated documentation owner: `tools/codegen/src/repo-docs-emit.ts`
+
+<!-- curaos:keep -->
+<!-- /curaos:keep -->
+
+---
+
+## API and Usage
+
+See [docs.curaos.abualruz.com](https://docs.curaos.abualruz.com) (interim).
+
+See [API reference](./src/index.ts) or generated TypeDoc.
+
+<!-- curaos:keep -->
+<!-- /curaos:keep -->
+
+---
+
+## Status
+
+private alpha
+
+- Docs generated from `tools/codegen/src/repo-docs-emit.ts`.
+- Public documentation: [docs.curaos.abualruz.com](https://docs.curaos.abualruz.com).
+- Changelog: [CHANGELOG.md](./CHANGELOG.md) when present.
+
+---
+
+## Security
+
+See [SECURITY.md](./SECURITY.md) for vulnerability reporting policy.
+
+---
+
+## Maintainers
+
+- CuraOS Team - [GitHub](https://github.com/Cura-OS)
+
+---
+
+## Contributing
+
+Contributions are handled through the repository maintainers. Public contribution guidelines are emitted for open and source-available repositories.
+
+By contributing, you agree that your contributions will be licensed under the same license as this project.
+
+---
+
+## License
+
+LicenseRef-CuraOS-Proprietary - CuraOS (Care Oriented Stack). See [LICENSE](./LICENSE) for details.
