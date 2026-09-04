@@ -33,6 +33,7 @@
   },
   "scripts": {
     "build": "tsc",
+    "ci": "bun run lint && bun run typecheck && bun run test && bun run build",
     "lint": "oxlint .",
     "test": "bun test test",
     "test:coverage": "bun test test --coverage",
